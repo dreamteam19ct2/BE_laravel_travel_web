@@ -28,8 +28,8 @@ Route::post('/user/register', [RegisterController::class, 'create']);
 Route::post('/user/login',[LoginController::class,'login']);
 
 // Tour
-Route::post('/tour/create',[TourController::class,'create_tour']);
-Route::post('/tour/checkuser',[TourController::class,'check_user']);
+
+
 
 
 //test
@@ -37,5 +37,6 @@ Route::post('/login', [UserController::class,'login']);
 Route::post('/register',[UserController::class,'register']);
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/get_user', [UserController::class,'get_user']);
+    Route::post('/create_tour',[TourController::class,'create_tour']);
 });
 

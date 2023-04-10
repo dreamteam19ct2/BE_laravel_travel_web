@@ -16,10 +16,11 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $user = User::where('email', $email)->first();
             Auth::login($user);
-            return "Oke";
+            return response()->json(["user" => $user,'message'=>"Login ok"],200);
+
         }
 
-       return "Err";
+        return response()->json(['message'=>"Login err"],401);
     }
 
 }
