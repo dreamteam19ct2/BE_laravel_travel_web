@@ -15,59 +15,26 @@ use Illuminate\Http\Request;
 class TourController extends Controller
 {
     //
-
-
-    public function check_user(){
-        $guard = app(Guard::class);
-        $user = $guard->user();
-        dd($guard);
-    }
-
-
     public function create_tour(TourRequest $request){
 
-
-        $data = new TourModel();
-
-        $data['tour_name'] =$request->tour_name;
-        Session::put('tour_name', $data['tour_name']);
-        $data['img'] =$request->img;
-        Session::put('img', $data['img']);
-        $data['description'] =$request->description;
-        Session::put('description', $data['description']);
-        $data['date_start'] =$request->date_start;
-        Session::put('date_start', $data['date_start']);
-        $data['date_end'] =$request->date_end;
-        Session::put('date_end', $data['date_end']);
-        $data['max_people'] =$request->max_people;
-        Session::put('max_people', $data['max_people']);
-        $data['price'] =$request->price;
-        Session::put('price', $data['price']);
-        $data['detail'] =$request->detail;
-        Session::put('detail', $data['detail']);
-        $data['type_tour'] =$request->type_tour;
-        Session::put('type_tour', $data['type_tour']);
-        $data['location'] =$request->location;
-        Session::put('location', $data['location']);
-
-
-            $data = [
-                'tour_name' => Session::get('tour_name'),
-                'img' => Session::get('img'),
-                'description' => Session::get('description'),
-                'date_start' => Session::get('date_start'),
-                'date_end' => Session::get('date_end'),
-                'max_people' => Session::get('max_people'),
-                'price' => Session::get('price'),
-                'detail' => Session::get('detail'),
-                'type_tour' => Session::get('type_tour'),
-                'location' => Session::get('location'),
-            ];
-            TourModel::create($data);
-            return with('Oke');
-
+       if (Auth::check()) {
+            $user = Auth::id();
+            $current_user = DB::table('users')->where([
+                ['system_role', '=', 2],['id', '=', $user],])->first();
+            if (!$current_user){
+                return response()->json(['message'=>"Method Not Allowed"],405);
+            }else{
+                TourModel::create($request->all());
+                return response()->json(["user_id" => $user,'message'=>"create tour success"],200);
+            }
+        } else {
+            return response()->json(['message'=>"Unauthorized"],401);
+        }
     }
-
+    public function get_tour(){
+        $tour = DB::table('tour')->get();
+        return response()->json($tour);
+    }
 
 
 }
