@@ -33,7 +33,7 @@ class TourController extends Controller
     }
     public function get_tour(){
         $tour = DB::table('tour')->get();
-        return response()->json($tour);   //
+        return response()->json($tour);
     }
 
 

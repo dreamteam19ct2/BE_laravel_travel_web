@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HistoryTourController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\loginController;
@@ -39,9 +40,11 @@ Route::post('/register',[UserController::class,'register']);
 //tour
 Route::get('/login/get_tour', [TourController::class,'get_tour']);
 
+
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/get_user', [UserController::class,'get_user']);
     // Tour
     Route::post('/create_tour',[TourController::class,'create_tour']);
+    Route::post('/booktour', [HistoryTourController::class,'history_tour']);
 });
 
