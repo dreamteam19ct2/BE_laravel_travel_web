@@ -58,4 +58,3 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/get_confirm_tour', [HistoryTourController::class,'get_confirm_tour']);
     Route::put('/confirm_tour', [HistoryTourController::class, 'confirm_tour']);
 });
-
