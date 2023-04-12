@@ -22,7 +22,7 @@ class TourController extends Controller
             $current_user = DB::table('users')->where([
                 ['system_role', '=', 2],['id', '=', $user],])->first();
             if (!$current_user){
-                return response()->json(['message'=>"Method Not Allowed"],405);
+                return response()->json(['message'=>"You Are Not ADMIN"],405);
             }else{
                 TourModel::create($request->all());
                 return response()->json(["user_id" => $user,'message'=>"create tour success"],200);
@@ -34,6 +34,129 @@ class TourController extends Controller
     public function get_tour(){
         $tour = DB::table('tour')->get();
         return response()->json($tour);
+    }
+
+
+    public function delete_soft_tour(Request $request){
+
+        if (Auth::check()) {
+
+            $user = Auth::id();
+            $current_user = DB::table('users')->where([
+                ['system_role', '=', 2],['id', '=', $user],])->first();
+            if (!$current_user){
+                return response()->json(['message'=>"You Are Not ADMIN"],405);
+            }
+            else{
+
+                $id = $request->id;
+                $tour_id = TourModel::find($id);
+
+                if($tour_id){
+                    $tour_id -> delete();
+                    return response()->json(['message'=>"delete_soft tour success"],200);
+                }
+                else{
+                    return response()->json(['message'=>"Not find"],404);
+                }
+                }
+        }
+        else {
+            return response()->json(['message'=>"Unauthorized"],401);
+        }
+    }
+    public function restore_tour(Request $request){
+
+        if (Auth::check()) {
+
+            $user = Auth::id();
+            $current_user = DB::table('users')->where([
+                ['system_role', '=', 2],['id', '=', $user],])->first();
+            if (!$current_user){
+                return response()->json(['message'=>"You Are Not ADMIN"],405);
+            }
+            else{
+
+                $id = $request->id;
+                $tour_id = TourModel::withTrashed()->find($id);
+
+                if ($tour_id) {
+                    $tour_id->restore(); // Khôi phục
+                    return response()->json(['message' => 'Tour restored successfully.'], 200);
+                } else {
+                    return response()->json(['message' => 'Tour not found.'], 404);
+                }
+            }
+        }
+        else {
+            return response()->json(['message'=>"Unauthorized"],401);
+        }
+    }
+    public function delete_tour(Request $request){
+
+        if (Auth::check()) {
+
+            $user = Auth::id();
+            $current_user = DB::table('users')->where([
+                ['system_role', '=', 2],['id', '=', $user],])->first();
+            if (!$current_user){
+                return response()->json(['message'=>"You Are Not ADMIN"],405);
+            }
+            else{
+
+                $id = $request->id;
+                $tour_id = TourModel::withTrashed($id);
+
+                if($tour_id){
+                    $tour_id -> forceDelete();
+                    return response()->json(['message'=>"delete tour success"],200);
+                }
+                else{
+                    return response()->json(['message'=>"Not find"],404);
+                }
+            }
+        }
+        else {
+             return response()->json(['message'=>"Unauthorized"],401);
+        }
+    }
+    public function update_tour(Request $request){
+        if (Auth::check()) {
+
+            $user = Auth::id();
+            $current_user = DB::table('users')->where([
+                ['system_role', '=', 2],['id', '=', $user],])->first();
+            if (!$current_user){
+                return response()->json(['message'=>"You Are Not ADMIN"],405);
+            }
+            else{
+
+                $id = $request->id;
+                $tour_id = TourModel::find($id);
+
+                if ($tour_id) {
+                    $tour_id->tour_name = $request->tour_name;
+                    $tour_id->img = $request->img;
+                    $tour_id->description = $request->description;
+                    $tour_id->date_start = $request->date_start;
+                    $tour_id->date_end = $request->date_end;
+                    $tour_id->max_people = $request->max_people;
+                    $tour_id->price = $request->price;
+                    $tour_id->detail = $request->detail;
+                    $tour_id->type_tour = $request->type_tour;
+                    $tour_id->location = $request->location;
+                    $tour_id->save();
+
+                    return response()->json(['message' => 'Update tour success'], 200);
+                }
+                else{
+                    return response()->json(['message'=>"Not find"],404);
+                }
+            }
+        }
+        else {
+             return response()->json(['message'=>"Unauthorized"],401);
+        }
     }
 
 

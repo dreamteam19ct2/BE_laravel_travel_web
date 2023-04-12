@@ -46,5 +46,16 @@ Route::group(['middleware' => 'auth:api'], function() {
     // Tour
     Route::post('/create_tour',[TourController::class,'create_tour']);
     Route::post('/booktour', [HistoryTourController::class,'history_tour']);
+
+    Route::delete('/delete_soft_tour', [TourController::class, 'delete_soft_tour']);
+    Route::patch('/restore_tour', [TourController::class, 'restore_tour']);
+    Route::delete('/delete_tour', [TourController::class, 'delete_tour']);
+    Route::put('/update_tour', [TourController::class, 'update_tour']);
+
+    Route::get('/get_bookingtour', [HistoryTourController::class,'get_bookingtour']);
+
+    //confirm tour
+    Route::get('/get_confirm_tour', [HistoryTourController::class,'get_confirm_tour']);
+    Route::put('/confirm_tour', [HistoryTourController::class, 'confirm_tour']);
 });
 
