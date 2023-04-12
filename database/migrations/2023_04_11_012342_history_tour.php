@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Tour extends Migration
+class HistoryTour extends Migration
 {
     /**
      * Run the migrations.
@@ -14,21 +14,16 @@ class Tour extends Migration
     public function up()
     {
         //
-        Schema::create('tour', function (Blueprint $table) {
+        Schema::create('history_tour', function (Blueprint $table) {
             $table->id();
-            $table->string('tour_name')->unique();
-            $table->string('img');
-            $table->string('description');
-            $table->date('date_start');
-            $table->date('date_end');
-            $table->string('max_people');
+            $table->integer('tour_id');
+            $table->integer('user_id');
+            $table->string('tour_name');
+            $table->date('date_history');
             $table->integer('price');
-            $table->string('detail');
-            $table->string('type_tour');
-            $table->string('location');
+            $table->string('status_tour');
             $table->rememberToken();
             $table->timestamps();
-
         });
     }
 
@@ -40,6 +35,6 @@ class Tour extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('tour');
+        Schema::dropIfExists('history_tour');
     }
 }

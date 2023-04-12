@@ -42,4 +42,5 @@ class UserController extends Controller
         $user = auth()->user();
         return response()->json(['user'=>$user],200);
     }
+
 }
