@@ -17,11 +17,18 @@ class UserController extends Controller
         $validated = $request -> validated();
         if(auth()->attempt($validated)){
             $user = Auth::user();
+            $iduser = Auth::id();
             $token = $user -> createToken("travel")->accessToken;
-            return response()->json(["user" => $user,'token' => $token,'message'=>"login success"],200);
+            $checkuser = User::where('id', $iduser)->pluck('system_role')->first();
+
+            if ($checkuser && $checkuser == 1) {
+                return response()->json(["user" => $user,'token' => $token,'message'=>"login user success"],200);
+            } else if ($checkuser && $checkuser == 2) {
+                return response()->json(["user" => $user,'token' => $token,'message'=>"login admin success"],200);
+            }
         }
         else{
-            return response()->json(['message'=>"login err"],211);
+            return response()->json(['message'=>"Sai tài khoản hoặc mật khẩu"],211);
         }
     }
 

@@ -31,10 +31,10 @@ class RegisterRequests extends FormRequest
             'email' => ['required','unique:users,email'],
             'password' => 'required',
             'c_password'=>'required|same:password',
-            'system_role' => 'required',
+            
         ];
     }
     public function failedValidation(Validator $validator){
-            throw new HttpResponseException(response()->json([$validator->errors()]),422);
+            throw new HttpResponseException(response()->json([$validator->errors(),'message'=>"register fail"]),422);
     }
 }

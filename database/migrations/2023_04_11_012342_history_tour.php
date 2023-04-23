@@ -21,7 +21,6 @@ class HistoryTour extends Migration
             $table->string('tour_name');
             $table->date('date_history');
             $table->integer('price');
-            $table->string('status_tour');
             $table->rememberToken();
             $table->timestamps();
         });

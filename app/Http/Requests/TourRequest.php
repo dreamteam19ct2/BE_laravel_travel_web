@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Contracts\Validation\Validator;
 class TourRequest extends FormRequest
 {
     /**
@@ -37,5 +37,8 @@ class TourRequest extends FormRequest
             'type_tour'=> 'required',
             'location'=> 'required',
         ];
+    }
+     public function failedValidation(Validator $validator){
+            throw new HttpResponseException(response()->json([$validator->errors(),'message'=>"create fail"]),422);
     }
 }
