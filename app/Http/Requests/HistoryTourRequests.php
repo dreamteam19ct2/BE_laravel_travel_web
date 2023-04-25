@@ -25,7 +25,13 @@ class HistoryTourRequests extends FormRequest
     {
         return [
             //
-            'id_tour' => 'required',
+            'tour_id' => 'required',
+            'id_user' => 'required',
+            'price' => 'required',
+            'tour_name' => 'required',
+            'date_history'=> 'required',
+            'status_tour'=> 'required',
+            'people'=> 'required'
         ];
     }
 }
