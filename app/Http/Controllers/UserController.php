@@ -9,19 +9,29 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterRequests;
 
+
 class UserController extends Controller
 {
 
     public function login(LoginRequests $request)
     {
         $validated = $request -> validated();
+
         if(auth()->attempt($validated)){
             $user = Auth::user();
+            $iduser = Auth::id();
+
             $token = $user -> createToken("travel")->accessToken;
-            return response()->json(["user" => $user,'token' => $token,'message'=>"login success"],200);
+            $checkuser = User::where('id', $iduser)->pluck('system_role')->first();
+
+            if ($checkuser == 1) {
+                return response()->json(["user" => $user,'token' => $token,'message'=>"login user success"],200);
+            } else if ( $checkuser == 2) {
+                return response()->json(["user" => $user,'token' => $token,'message'=>"login admin success"],200);
+            }
         }
         else{
-            return response()->json(['message'=>"login err"],211);
+            return response()->json(['message'=>"login err"],404);
         }
     }
 
@@ -32,8 +42,12 @@ class UserController extends Controller
         $validated['password'] = bcrypt( $validated['password'] );
         $validated['system_role'] = 1;
         $user = User::create($validated);
-        return response()->json(["user" => $user,'message'=>"register success"],200);
-
+        if($user){
+            return response()->json(["user" => $user,'message'=>"register success"],211);
+        }
+        else{
+            return response()->json(["user" => $user,'message'=>"register success"],200);
+        }
     }
 
 

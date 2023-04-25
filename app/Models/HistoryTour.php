@@ -15,6 +15,7 @@ class HistoryTour extends Model
         'tour_name',
         'date_history',
         'price',
+        'people',
         'status_tour',
 
 

@@ -38,6 +38,7 @@ class LoginRequests extends FormRequest
         return User::class;
     }
     public function failedValidation(Validator $validator){
+        //phương thức xử lí lỗi
         throw new HttpResponseException(response()->json([$validator->errors()]),422);
 }
 }

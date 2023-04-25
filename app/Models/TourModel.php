@@ -20,7 +20,5 @@ class TourModel extends Model
         'detail',
         'type_tour',
         'location',
-
-
     ];
 }
